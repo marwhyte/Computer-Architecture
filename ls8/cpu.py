@@ -12,7 +12,7 @@ class CPU:
         self.reg = [0] * 8  # like variables you have at your disposal
         self.pc = 0  # where a computer is in its program sequence.
         self.fl = 0  # flag (for compare)
-        self.reg[7] = 0xf4
+        self.reg[7] = 0xf4  # starting address
 
         self.func_dict = {
             1: self.HLT,
@@ -49,7 +49,7 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
-        if op == "MUL":
+        elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
         # elif op == "SUB": etc
         else:
@@ -82,7 +82,7 @@ class CPU:
         while self.status == True:
             opA = self.ram_read(self.pc + 1)  # operation code
             opB = self.ram_read(self.pc + 2)
-            ir = self.ram[self.pc]
+            ir = self.ram_read(self.pc)
             if ir not in self.func_dict:
                 print(f"Code not valid {ir}")
                 self.trace()
@@ -150,7 +150,7 @@ class CPU:
         else:
             self.pc += 2
 
-    def JNE(self, opA, opB):  # Jump if not equal
+    def JNE(self, opA, opB):  # Jump if not equal`
         if self.fl != 1:
             self.pc = self.reg[self.ram_read(self.pc + 1)]
         else:
