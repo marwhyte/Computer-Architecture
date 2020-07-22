@@ -49,6 +49,8 @@ class CPU:
 
         if op == "ADD":
             self.reg[reg_a] += self.reg[reg_b]
+        if op == "MUL":
+            self.reg[reg_a] *= self.reg[reg_b]
         # elif op == "SUB": etc
         else:
             raise Exception("Unsupported ALU operation")
@@ -140,16 +142,16 @@ class CPU:
             self.pc += 3
 
     def JMP(self, opA, opB):  # go to address in regester
-        self.pc = self.reg[self.ram[self.pc + 1]]
+        self.pc = self.reg[self.ram_read(self.pc + 1)]
 
     def JEQ(self, opA, opB):  # When Equal FLag is set jump to correct register
         if self.fl == 1:
-            self.pc = self.reg[self.ram[self.pc + 1]]
+            self.pc = self.reg[self.ram_read(self.pc + 1)]
         else:
             self.pc += 2
 
     def JNE(self, opA, opB):  # Jump if not equal
         if self.fl != 1:
-            self.pc = self.reg[self.ram[self.pc + 1]]
+            self.pc = self.reg[self.ram_read(self.pc + 1)]
         else:
             self.pc += 2
